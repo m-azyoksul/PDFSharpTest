@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Drawing;
+using System.Linq;
 using System.Text;
 using PdfSharp.Drawing;
 using PdfSharp.Drawing.Layout;
@@ -9,13 +11,24 @@ namespace PDFSharpTest.Console
 {
     class Program
     {
-        // Define constants
-        // TODO: Abstract away
-        const int pageW = 595;
-        const int pageH = 842;
+        /// <summary>
+        /// Page width value that PDFSharp uses by default.
+        /// Test decoration calculates dimensions using PDFSharp defaults as well.
+        /// TODO: Abstract away
+        /// </summary>
+        const float pageW = 595f;
+
+        /// <summary>
+        /// Page height value that PDFSharp uses by default.
+        /// Test decoration calculates dimensions using PDFSharp defaults as well.
+        /// TODO: Abstract away
+        /// </summary>
+        const float pageH = 842f;
 
         static void Main(string[] args)
         {
+            var debug = true;
+
             // Get the test
             var test = GetATestModel();
 
@@ -47,19 +60,27 @@ namespace PDFSharpTest.Console
                 // Add page
                 var page = document.AddPage();
 
-                // Add graphic
+                // Define necessary stuff
                 var graphics = XGraphics.FromPdfPage(page);
                 var textFormatter = new XTextFormatter(graphics);
 
+                // Text properties
+                var questionOrderFont = new XFont(d.FontFamily, d.QuestionNumberFontSize, XFontStyle.Regular);
+                var questionOrderColor = XBrushes.MediumPurple;
+                var font = new XFont(d.FontFamily, d.FontSize, XFontStyle.Regular);
+                var textColor = XBrushes.Black;
+
                 // Draw top margin
-                graphics.DrawRectangle(XPens.Blue,
+                if (debug)
+                    graphics.DrawRectangle(XPens.Blue,
                     0,
                     0,
                     page.Width,
                     d.TopMargin);
 
                 // Draw bottom margin
-                graphics.DrawRectangle(XPens.Blue,
+                if (debug)
+                    graphics.DrawRectangle(XPens.Blue,
                     0,
                     d.TopMargin + d.ColumnH,
                     page.Width,
@@ -71,33 +92,73 @@ namespace PDFSharpTest.Console
                     .ToList();
 
                 // Draw columns
-                columnXs.ForEach(columnX =>
+                if (debug)
+                    columnXs.ForEach(columnX =>
                     {
-                        graphics.DrawRectangle(XPens.Black,
+                        graphics.DrawRectangle(XPens.Orange,
                             columnX,
                             d.TopMargin,
                             d.ColumnW,
                             d.ColumnH);
                     });
 
-                var font = new XFont(d.Font, d.FontSize, XFontStyle.Regular);
+                // Draw middle line
+                graphics.DrawLine(XPens.Black,
+                    pageW / 2,
+                    d.TopMargin,
+                    pageW / 2,
+                    d.TopMargin + d.ColumnH);
 
+                //XBrush brush = new XLinearGradientBrush(new XPoint(0, 0), new XPoint(50, 20), XColors.Blue, XColors.Green);
+                //graphics.DrawRectangle(XPens.Black,
+                //    brush,
+                //    pageW / 2,
+                //    d.TopMargin,
+                //    .25,
+                //    d.ColumnH);
+
+                // For each column
                 for (int i = 0; i < testPage.TestColumns.Count; i++)
                 {
-                    textFormatter.DrawString("1.", font, XBrushes.Black, new XRect(columnXs[i], d.TopMargin, 20, 0), XStringFormats.TopLeft);
-                    textFormatter.DrawString(testPage.TestColumns[i].McQuestions[0].Prompt, font, XBrushes.Black, new XRect(columnXs[i] + 20, d.TopMargin, d.ColumnW - 20, 100), XStringFormats.TopLeft);
-                    
-                    var imagePath = "image.png";
-                    graphics.DrawImage(XImage.FromFile(imagePath), columnXs[i] + 1, d.TopMargin + 100, d.ColumnW - 2, d.ColumnW - 2);
+                    for (int j = 0; j < testPage.TestColumns[i].McQuestions.Count; j++)
+                    {
+                        // Type question order
+                        var questionOrderRect = new XRect(
+                            columnXs[i],
+                            d.TopMargin + j * 200,
+                            d.QuestionOrderAreaWidth,
+                            200);
+                        textFormatter.DrawString($"{j + 1}{d.QuestionNumberAppendix}", questionOrderFont, questionOrderColor, questionOrderRect, XStringFormats.TopLeft);
+
+                        // Type question prompt
+                        var questionPromptRect = new XRect(
+                            columnXs[i] + d.QuestionOrderAreaWidth,
+                            d.TopMargin + j * 200,
+                            d.ColumnW - d.QuestionOrderAreaWidth,
+                            100);
+                        textFormatter.DrawString(testPage.TestColumns[i].McQuestions[j].Prompt, font, textColor, questionPromptRect, XStringFormats.TopLeft);
+
+                        for (int k = 0; k < testPage.TestColumns[i].McQuestions[j].QuestionOptions.Count; k++)
+                        {
+                            // Type question option prompt
+                            var optionPromptRect = new XRect(
+                                columnXs[i] + d.QuestionOrderAreaWidth,
+                                d.TopMargin + j * 200 + 100 + k * 20,
+                                d.ColumnW - d.QuestionOrderAreaWidth,
+                                20);
+                            var optionText = $"{OptionPretext(d.OptionStyle, k)}{d.OptionAppendix} {testPage.TestColumns[i].McQuestions[j].QuestionOptions[k].Prompt}";
+                            textFormatter.DrawString(optionText, font, textColor, optionPromptRect, XStringFormats.TopLeft);
+                        }
+                    }
+
+                    //var imagePath = "image.png";
+                    //graphics.DrawImage(XImage.FromFile(imagePath), columnXs[i] + 1, d.TopMargin + 100, d.ColumnW - 2, d.ColumnW - 2);
                 }
-
-
             });
 
             // Save PDF
             document.Save("HelloWorld.pdf");
         }
-
         private static TestModel GetATestModel()
         {
             return new TestModel
@@ -107,13 +168,22 @@ namespace PDFSharpTest.Console
                 {
                     Name = "Awesome Decorations",
                     ColumnNumber = 2,
-                    ColumnH = 680,
-                    ColumnW = 255,
                     TopMargin = 100,
-                    SideMargin = 28,
+                    SideMargin = 40,
+                    ColumnW = 235,
+                    ColumnH = 680,
+                    QuestionOrderAreaWidth = 20,
                     BiasedMarginLeft = 0,
-                    Font = "Verdana",
+
+                    FontFamily = "Verdana",
                     FontSize = 13,
+
+                    QuestionNumberFontSize = 13,
+                    QuestionNumberColor = "000000",
+                    QuestionNumberAppendix = ".",
+
+                    OptionStyle = OptionStyle.RomanNumerals,
+                    OptionAppendix = ")",
                 },
                 TestPages = Enumerable.Range(0, 3).Select(_ => new TestPageModel
                 {
@@ -126,13 +196,66 @@ namespace PDFSharpTest.Console
                             NumberOfOptions = 5,
                             CorrectOption = 0,
                             OptionsPerRow = 5,
-                            QuestionOptions = Enumerable.Range(0, 2).Select(_ => new QuestionOptionModel
+                            QuestionOptions = Enumerable.Range(0, 4).Select(optionOrder => new QuestionOptionModel
                             {
-                                Prompt = "Question prompt",
+                                Prompt = $"Option {optionOrder + 1}",
                             }).ToList()
                         }).ToList(),
                     }).ToList(),
                 }).ToList(),
+            };
+        }
+
+        private static string OptionPretext(OptionStyle style, int optionIndex)
+        {
+            return style switch
+            {
+                OptionStyle.UppercaseLetters => optionIndex switch
+                {
+                    0 => "A",
+                    1 => "B",
+                    2 => "C",
+                    3 => "D",
+                    4 => "E",
+                    5 => "F",
+                    6 => "G",
+                    7 => "H",
+                    8 => "I",
+                    9 => "J",
+                    _ => throw new ArgumentOutOfRangeException(nameof(optionIndex), optionIndex, null),
+                },
+                OptionStyle.LowercaseLetters => optionIndex switch
+                {
+                    0 => "a",
+                    1 => "b",
+                    2 => "c",
+                    3 => "d",
+                    4 => "e",
+                    5 => "f",
+                    6 => "g",
+                    7 => "h",
+                    8 => "i",
+                    9 => "j",
+                    _ => throw new ArgumentOutOfRangeException(nameof(optionIndex), optionIndex, null),
+                },
+                OptionStyle.NumbersFrom1 => (optionIndex + 1).ToString(),
+                OptionStyle.RomanNumerals => optionIndex switch
+                {
+                    0 => "I",
+                    1 => "II",
+                    2 => "III",
+                    3 => "IV",
+                    4 => "V",
+                    5 => "VI",
+                    6 => "VII",
+                    7 => "VIII",
+                    8 => "IX",
+                    9 => "X",
+                    _ => throw new ArgumentOutOfRangeException(nameof(optionIndex), optionIndex, null),
+                },
+                OptionStyle.TrueFalse => optionIndex % 2 == 0 ? "True" : "False",
+                OptionStyle.CheckBox => "☐",
+                _ => throw new ArgumentOutOfRangeException(nameof(style), style, null)
             };
         }
     }

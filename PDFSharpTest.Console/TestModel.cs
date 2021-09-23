@@ -57,22 +57,57 @@ namespace PDFSharpTest.Console.Models
         public bool LeaveSpaceToColumnEnd { get; set; }
         #endregion
 
-        public string Font { get; set; }
+        #region Font Style
+        public string FontFamily { get; set; }
         public int FontSize { get; set; }
+        #endregion
 
         #region Question Number Style
-        public string QuestionNumberColor { get; set; }
         public int QuestionNumberFontSize { get; set; }
+        public string QuestionNumberColor { get; set; }
         public string QuestionNumberAppendix { get; set; }
         #endregion
 
         #region Option Style
-        public int OptionStyle { get; set; }
+        public OptionStyle OptionStyle { get; set; }
         public string OptionAppendix { get; set; }
         #endregion
 
         public string Background { get; set; }
 
         public string AnswerSheet { get; set; }
+    }
+    public enum OptionStyle
+    {
+        /// <summary>
+        /// A, B, C, D, E...
+        /// </summary>
+        UppercaseLetters,
+
+        /// <summary>
+        /// a, b, c, d, e...
+        /// </summary>
+        LowercaseLetters,
+
+        /// <summary>
+        /// 1, 2, 3, 4, 5...
+        /// </summary>
+        NumbersFrom1,
+
+        /// <summary>
+        /// I, II, III, IV, V...
+        /// </summary>
+        RomanNumerals,
+
+        /// <summary>
+        /// True, False.
+        /// This can only be used if the number of options is 2
+        /// </summary>
+        TrueFalse,
+
+        /// <summary>
+        /// ☐, ☐, ☐, ☐, ☐..
+        /// </summary>
+        CheckBox,
     }
 }

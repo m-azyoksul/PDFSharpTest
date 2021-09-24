@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Page Design</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <style type="text/css">
+	    .image-center {
+		  display: block;
+		  margin-left: auto;
+		  margin-right: auto;
+		  width: 50%;
+		}
+
+		@font-face {
+		  font-family: fulbo-argenta;
+		  src: url("fulbo-argenta.otf");
+		}
+
+	    .m-0{
+	    	margin: 0;
+	    }
+	    .p-0{
+	    	padding: 0;
+	    }
+
+    </style>
+
+    <style type="text/css">
+
+		.header{
+			position: relative;
+			flex: 1 1 auto;
+
+			width: 100%;
+			min-height: 131px;
+
+			margin: 0;
+			padding: 0;
+
+		}
+		.header .test-name{
+			position: absolute;
+			top: 53px;
+			left: 40px;
+			height: 32px;
+			width: 270px;
+			font-size: 22px;
+
+			color: rgb(35, 60, 150);
+			text-align: center;
+			margin: 0;
+			padding: 0;
+		}
+		.header .test-type{
+			font-family: fulbo-argenta, serif;
+			font-style: italic;
+			position: absolute;
+			top: 41px;
+			left: 350px;
+
+			color: rgb(35, 60, 150);
+			text-align: center;
+			margin: 0;
+			padding: 0;
+			transform: rotate(-6deg);
+		}
+		.header .test-number{
+			position: absolute;
+			top: 66px;
+			left: 388px;
+
+			font-size: 29px;
+
+			color: white;
+			text-align: center;
+			margin: 0;
+			padding: 0;
+		}
+		.header .test-grade{
+			position: absolute;
+			top: 50px;
+			left: 594px;
+
+			font-size: 23px;
+
+			color: white;
+			-webkit-text-stroke: 1px rgb(10,10,10);
+			text-align: center;
+			margin: 0;
+			padding: 0;
+		}
+		.header .test-year{
+			position: absolute;
+			top: 88px;
+			left: 594px;
+
+			font-size: 14px;
+
+			color: rgb(149, 196, 204);
+			text-align: center;
+			margin: 0;
+			padding: 0;
+		}
+
+		.footer{
+			position: relative;
+			flex: 1 1 auto;
+
+			width: 100%;
+			min-height: 67px;
+
+			margin: 0;
+			padding: 0;
+
+		}
+		.footer .page-number{
+			position: absolute;
+			bottom: 8px;
+			left: 387px;
+
+			font-size: 29px;
+
+			color: white;
+			text-align: center;
+			margin: 0;
+			padding: 0;
+		}
+		.footer .test-subject{
+			position: absolute;
+			bottom: 87px;
+			left: -21px;
+			transform: rotate(-90deg);
+			font-size: 13px;
+
+			color: lightgray;
+			text-align: center;
+			margin: 0;
+			padding: 0;
+		}
+
+		.questions-area{
+			/*display: flex;*/
+			flex: 0 1 auto;
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			padding: 0;
+		}
+		.left-column{
+			height: 100%;
+			width: 50%;
+			justify-self: left;
+			margin: 0 20px 0 50px;
+			padding: 0;
+            position: absolute;
+            left: 20px;
+            top: 50px;
+			
+		}
+		.right-column{
+			height: 100%;
+			width: 50%;
+
+			justify-self: right;
+			margin: 0 50px 0 20px;
+			padding: 0;
+
+            position: absolute;
+            left: 200px;
+            top: 50px;
+			
+		}
+
+		.question{
+			/*display: flex;*/
+			width: 100%;
+			margin: 0;
+			margin-bottom: 50px;
+			padding: 0;
+			line-height: 110%;
+		}
+		.question-num{
+			padding: 0;
+			margin: 0;
+			color: rgb(225, 2, 127);
+			margin-right: 10px;
+			font-family: Arial, Helvetica, sans-serif;
+			font-weight: 600;
+			font-size: 14px;
+		}
+		.question-content{
+			display: block;
+		}
+		.question-img{
+			width: 100%;
+			margin: 0;
+			margin-bottom: 7px;
+		}
+		.question-img img{
+			width: 100%;
+			height: 100%;
+			border-radius: 3px;
+		}
+		.question-text{
+			margin: 0 0 10px 0;
+			font-family: Arial, Helvetica, sans-serif;
+			font-weight: 400;
+			font-size: 13px;
+			text-align: justify;
+		}
+		.question-query{
+			margin: 0 0 20px 0;
+			font-family: Arial, Helvetica, sans-serif;
+			font-weight: 600;
+			font-size: 13px;
+		}
+		.question-choices{
+			display: flex;
+			margin: 0;
+			padding: 0;
+		}
+		.question-choices h5{
+			font-family: Arial, Helvetica, sans-serif;
+			font-weight: 400;
+			font-size: 14px;
+			margin: 0;
+			margin-right: auto;
+			margin-left: auto;
+			padding: 0;
+		}
+		.optical-form{
+			height: 180px;
+			width: 100%;
+			margin: 0;
+		}
+		.optical-form img{
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			border-radius: 5px;
+		}
+    </style>
+</head>
+
+<body class="m-0" style="font-family: Arial, Helvetica, sans-serif;">
+
+	<!--Whole page-->
+	<div class="whole-page">
+
+		<!--Page header-->
+		<div class="header">
+			<h3 class="test-name">Mutlak Değer</h3>
+			<h2 class="test-grade">9. Sınıf</h2>
+			<h3 class="test-type">MİNİ TEST</h3>
+			<h3 class="test-number">1</h3>
+			<h3 class="test-year">2020 - 2021</h3>
+		</div>
+
+		<!--Main area-->
+		<div class="questions-area">
+
+			<!--Main area left column-->
+			<div class="left-column">
+
+				<!--Left column questions height=924.515625-->
+				<div class="question">
+					<!--Question number-->
+					<div class="question-num">1.</div>
+					<div class="question-content">
+						<!--Question image (Conditional)-->
+						<div class="question-img">
+							<img src="D:\CodeWorkspace\C# projects\Sandbox and tutorials\PDFSharpTest\PDFSharpTest.Console\radio.PNG" class="image-center" alt="questionImage">
+						</div>
+						<!--Question text-->
+						<div class="question-text">
+							Ardaşık iki doğal sayının en küçük ortak katı; en büyük ortak bölüneninin 10 katıdır.
+						</div>
+						<!--Question query-->
+						<div class="question-query">
+							Buna göre bu sorunun cevabı aşağıdakilerden hangisi sence?
+						</div>
+						<!--Question choices-->
+						<div class="question-choices">
+							<h5 style="margin-left: 0">A) 1</h5>
+							<h5>B) 2</h5>
+							<h5>C) 3</h5>
+							<h5>D) 4</h5>
+							<h5 style="margin-right: 0">E) 5</h5>
+						</div>
+					</div>
+
+				</div>
+				<div class="question">
+					<!--Question number-->
+					<div class="question-num">2.</div>
+					<div class="question-content">
+						<!--Question image (Conditional)-->
+						<div class="question-img" style="display: none;">
+							<img src="copyPaste.PNG" class="image-center" alt="questionImage">
+						</div>
+						<!--Question text-->
+						<div class="question-text">
+							Ardaşık iki doğal sayının en küçük ortak katı; en büyük ortak bölüneninin 10 katıdır. Olmayadabilir ama olursa o kadar olur yani. Hangi sayının hangi sayının hangi katı olup olmadığını bi cümleylemi bulacaz hani bulsak bile neden bulalım ki başkası bulsun bizim işimiz bu mu şimdi. Eğitim sistemi çok bozdu çok. Bu akdar bozmasaydı iyiydi hani de çok bozdu şu günlerde.
+						</div>
+						<!--Question query-->
+						<div class="question-query">
+							Buna göre bu sorunun cevabı aşağıdakilerden hangisi sence?
+						</div>
+						<!--Question choices-->
+						<div class="question-choices">
+							<h5 style="margin-left: 0">A) 1</h5>
+							<h5>B) 2</h5>
+							<h5>C) 3</h5>
+							<h5>D) 4</h5>
+							<h5 style="margin-right: 0">E) 5</h5>
+						</div>
+					</div>
+
+				</div>
+				<div class="question">
+					<!--Question number-->
+					<div class="question-num">3.</div>
+					<div class="question-content">
+						<!--Question image (Conditional)-->
+						<div class="question-img" style="display: none;">
+							<img src="copyPaste.PNG" class="image-center" alt="questionImage">
+						</div>
+						<!--Question text-->
+						<div class="question-text">
+							Ardaşık iki doğal sayının en küçük ortak katı; en büyük ortak bölüneninin 10 katıdır. asd dsd s sds ds dss ds ds s d  ds d fd fd  dfs dsadfsdfsdfsdsgdfdsgfgddfggddfgfdasfddsfjhsgsfdjhsfd fs dsfd d dd f fds d sf fd fsdsfdfsdsfdfsd
+						</div>
+						<!--Question query-->
+						<div class="question-query">
+							Buna göre bu sorunun cevabı aşağıdakilerden hangisi sence?
+						</div>
+						<!--Question choices-->
+						<div class="question-choices">
+							<h5 style="margin-left: 0">A) 1</h5>
+							<h5>B) 2</h5>
+							<h5>C) 3</h5>
+							<h5>D) 4</h5>
+							<h5 style="margin-right: 0">E) 5</h5>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+			<!--Main area right column-->
+			<div class="right-column">
+				<!--Right column questions-->
+				<div class="question">
+					<!--Question number-->
+					<div class="question-num">5.</div>
+					<div class="question-content">
+						<!--Question image (Conditional)-->
+						<div class="question-img">
+							<img src="radio.png" class="image-center" alt="questionImage">
+						</div>
+						<!--Question text-->
+						<div class="question-text">
+							Ardaşık iki doğal sayının en küçük ortak katı; en büyük ortak bölüneninin 10 katıdır.
+						</div>
+						<!--Question query-->
+						<div class="question-query">
+							Buna göre bu sorunun cevabı aşağıdakilerden hangisi sence?
+						</div>
+						<!--Question choices-->
+						<div class="question-choices">
+							<h5 style="margin-left: 0">A) 1</h5>
+							<h5>B) 2</h5>
+							<h5>C) 3</h5>
+							<h5>D) 4</h5>
+							<h5 style="margin-right: 0">E) 5</h5>
+						</div>
+					</div>
+
+				</div>
+				<div class="question">
+					<!--Question number-->
+					<div class="question-num">6.</div>
+					<div class="question-content">
+						<!--Question image (Conditional)-->
+						<div class="question-img">
+							<img src="radio.png" class="image-center" alt="questionImage">
+						</div>
+						<!--Question text-->
+						<div class="question-text">
+							Ardaşık iki doğal sayının en küçük ortak katı; en büyük ortak bölüneninin 10 katıdır.
+						</div>
+						<!--Question query-->
+						<div class="question-query">
+							Buna göre bu sorunun cevabı aşağıdakilerden hangisi sence?
+						</div>
+						<!--Question choices-->
+						<div class="question-choices">
+							<h5 style="margin-left: 0">A) 1</h5>
+							<h5>B) 2</h5>
+							<h5>C) 3</h5>
+							<h5>D) 4</h5>
+							<h5 style="margin-right: 0">E) 5</h5>
+						</div>
+					</div>
+
+				</div>
+				<div class="optical-form" style="">
+                    <img src="D:\CodeWorkspace\C# projects\Sandbox and tutorials\PDFSharpTest\PDFSharpTest.Console\optical_form.png" alt="Optical Form">
+				</div>
+
+			</div>
+		</div>
+
+		<!--Page footer-->
+		<div class="footer">
+			<h3 class="page-number">1</h3>
+			<h3 class="test-subject">TYT Matematik</h3>
+		</div>
+
+	</div>
+</body>
+</html>

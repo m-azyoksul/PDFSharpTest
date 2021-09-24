@@ -2,10 +2,12 @@
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Drawing.Layout;
 using PdfSharp.Pdf;
 using PDFSharpTest.Console.Models;
+using TheArtOfDev.HtmlRenderer.PdfSharp;
 
 namespace PDFSharpTest.Console
 {
@@ -27,6 +29,11 @@ namespace PDFSharpTest.Console
 
         static void Main(string[] args)
         {
+            foo2();
+        }
+
+        private static void foo1()
+        {
             var debug = true;
 
             // Get the test
@@ -47,8 +54,14 @@ namespace PDFSharpTest.Console
             // Validate: Bottom margin is not negative
             if (pageH - d.TopMargin - d.ColumnH < 0) return;
 
-            // Register encoding provider.
-            // This is necessary for the PDFSharp to work properly.
+            // Text properties
+            var questionOrderFont = new XFont(d.FontFamily, d.QuestionNumberFontSize, XFontStyle.Regular);
+            var questionOrderColor = XBrushes.MediumPurple;
+            var font = new XFont(d.FontFamily, d.FontSize, XFontStyle.Regular);
+            var textColor = XBrushes.Black;
+
+            // Register encoding provider. This is necessary for the PDFSharp to work properly.
+            // Reference: https://youtu.be/C-yMypr_TdY
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
             // Create doc
@@ -63,12 +76,6 @@ namespace PDFSharpTest.Console
                 // Define necessary stuff
                 var graphics = XGraphics.FromPdfPage(page);
                 var textFormatter = new XTextFormatter(graphics);
-
-                // Text properties
-                var questionOrderFont = new XFont(d.FontFamily, d.QuestionNumberFontSize, XFontStyle.Regular);
-                var questionOrderColor = XBrushes.MediumPurple;
-                var font = new XFont(d.FontFamily, d.FontSize, XFontStyle.Regular);
-                var textColor = XBrushes.Black;
 
                 // Draw top margin
                 if (debug)
@@ -108,14 +115,6 @@ namespace PDFSharpTest.Console
                     d.TopMargin,
                     pageW / 2,
                     d.TopMargin + d.ColumnH);
-
-                //XBrush brush = new XLinearGradientBrush(new XPoint(0, 0), new XPoint(50, 20), XColors.Blue, XColors.Green);
-                //graphics.DrawRectangle(XPens.Black,
-                //    brush,
-                //    pageW / 2,
-                //    d.TopMargin,
-                //    .25,
-                //    d.ColumnH);
 
                 // For each column
                 for (int i = 0; i < testPage.TestColumns.Count; i++)
@@ -159,6 +158,39 @@ namespace PDFSharpTest.Console
             // Save PDF
             document.Save("HelloWorld.pdf");
         }
+
+        private static void foo2()
+        {
+            //Bitmap bitmap = new Bitmap(1200, 1800);
+            //Graphics g = Graphics.FromImage(bitmap);
+            //HtmlRenderer.HtmlContainer c = new HtmlRenderer.HtmlContainer();
+            //c.SetHtml("<html><body style='font-size:20px'>Whatever</body></html>");
+            //c.PerformPaint(g);
+            //PdfDocument doc = new PdfDocument();
+            //PdfPage page = new PdfPage();
+            //XImage img = XImage.FromGdiPlusImage(bitmap);
+            //doc.Pages.Add(page);
+            //XGraphics xgr = XGraphics.FromPdfPage(doc.Pages[0]);
+            //xgr.DrawImage(img, 0, 0);
+            //doc.Save(@"C:\test.pdf");
+            //doc.Close();
+
+            //var doc = TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf("<html><body style='font-size:20px'>Whatever</body></html>", PageSize.A4);
+            //PdfPage page = new PdfPage();
+            ////XImage img = XImage.FromGdiPlusImage(bitmap);
+            //doc.Pages.Add(page);
+            ////XGraphics xgr = XGraphics.FromPdfPage(doc.Pages[0]);
+            ////xgr.DrawImage(img, 0, 0);
+            //doc.Save("test.pdf");
+            //doc.Close();
+            
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            string htmlString = System.IO.File.ReadAllText(@"D:\CodeWorkspace\C# projects\Sandbox and tutorials\PDFSharpTest\PDFSharpTest.Console\test_design.html");
+            //string htmlString = "<h1>Document</h1> <p>This is an HTML document which is converted to a pdf file.</p>";
+            PdfDocument pdfDocument = PdfGenerator.GeneratePdf(htmlString, PageSize.A4);
+            pdfDocument.Save("HTMLtoPDFDocument.pdf");
+        }
+
         private static TestModel GetATestModel()
         {
             return new TestModel
@@ -174,6 +206,8 @@ namespace PDFSharpTest.Console
                     ColumnH = 680,
                     QuestionOrderAreaWidth = 20,
                     BiasedMarginLeft = 0,
+                    MinWhiteSpaceBetweenQuestions = 25,
+                    LeaveSpaceToColumnEnd = false,
 
                     FontFamily = "Verdana",
                     FontSize = 13,
